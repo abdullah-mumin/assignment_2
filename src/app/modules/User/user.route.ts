@@ -10,4 +10,8 @@ router.get('/', userController.getAllUsers);
 
 router.get('/:userId', userController.getUserById);
 
+router.put('/:userId', userController.updateUserById);
+
+router.delete('/:userId', userController.deleteUserByID);
+
 export const userRoutes = router;

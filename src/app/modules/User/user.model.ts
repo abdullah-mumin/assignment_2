@@ -33,6 +33,7 @@ export const UserSchema = new Schema<TUser, UserModel>({
   userId: {
     type: Number,
     required: true,
+    unique: true,
   },
   username: {
     type: String,
@@ -62,6 +63,14 @@ export const UserSchema = new Schema<TUser, UserModel>({
     default: [],
   },
   address: addressSchema,
+  isDelete: {
+    type: Boolean,
+    default: false,
+  },
+  orders: {
+    type: [Object],
+    default: [],
+  },
 });
 
 UserSchema.pre('save', async function (next) {
@@ -82,8 +91,9 @@ UserSchema.post('save', async function (doc, next) {
   next();
 });
 
+//custom static function
 UserSchema.statics.isUserExists = async function (id: number) {
-  const existingUser = await User.findOne({ id });
+  const existingUser = await User.findOne({ userId: id });
 
   return existingUser;
 };

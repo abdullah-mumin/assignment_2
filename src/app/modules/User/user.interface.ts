@@ -1,4 +1,5 @@
 import { Model } from 'mongoose';
+import { TOrder } from '../Order/order.interface';
 
 export interface TFullName {
   firstName: string;
@@ -21,6 +22,8 @@ export interface TUser {
   isActive: boolean;
   hobbies: string[];
   address: TAddress;
+  isDelete: boolean;
+  orders: TOrder[];
 }
 
 //for creating static
