@@ -5,7 +5,7 @@ const createOrderByIDToDB = async (id: number, orderData: TOrder) => {
   if (await User.isUserExists(id)) {
     const updatedData = await User.updateOne(
       { userId: id },
-      { $set: { orders: orderData } },
+      { $push: { orders: { $each: orderData } } },
     );
     return updatedData;
   } else {

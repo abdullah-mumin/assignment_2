@@ -4,15 +4,16 @@ import { TOrder } from './order.interface';
 export const OrderSchema = new Schema<TOrder>({
   productName: {
     type: String,
-    required: true,
+    maxlength: [30, 'Product Name can not be more then 30 characters!'],
+    required: [true, 'Product Name is required!'],
   },
   price: {
     type: Number,
-    required: true,
+    required: [true, 'Price is required!'],
   },
   quantity: {
     type: Number,
-    required: true,
+    required: [true, 'Quantity is required!'],
   },
 });
 
