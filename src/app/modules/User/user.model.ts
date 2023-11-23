@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
-import { TAddress, TFullName, TUser } from './user.interface';
+import { TAddress, TFullName, TUser, UserModel } from './user.interface';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 
 export const fullNameSchema = new Schema<TFullName>({
   firstName: {
@@ -27,7 +29,7 @@ export const addressSchema = new Schema<TAddress>({
   },
 });
 
-export const UserSchema = new Schema<TUser>({
+export const UserSchema = new Schema<TUser, UserModel>({
   userId: {
     type: Number,
     required: true,
@@ -39,7 +41,7 @@ export const UserSchema = new Schema<TUser>({
   },
   password: {
     type: String,
-    required: true,
+    // required: true,
   },
   fullName: fullNameSchema,
   age: {
@@ -62,4 +64,28 @@ export const UserSchema = new Schema<TUser>({
   address: addressSchema,
 });
 
-export const UserModel = model<TUser>('User', UserSchema);
+UserSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this; //document
+
+  //hashing password and save in DB
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+
+UserSchema.post('save', async function (doc, next) {
+  //   doc.set('password').save();
+  //   doc.set('fullName')
+  next();
+});
+
+UserSchema.statics.isUserExists = async function (id: number) {
+  const existingUser = await User.findOne({ id });
+
+  return existingUser;
+};
+
+export const User = model<TUser, UserModel>('User', UserSchema);
