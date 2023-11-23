@@ -16,8 +16,4 @@ export const OrderSchema = new Schema<TOrder>({
   },
 });
 
-// OrderSchema.post('aggregate', function(next){
-//     this.pipeline()
-// })
-
 export const Order = model<TOrder>('User', OrderSchema);

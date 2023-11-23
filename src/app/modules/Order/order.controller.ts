@@ -72,6 +72,7 @@ const getOrdersById = async (req: Request, res: Response) => {
     });
   }
 };
+
 const getTotalOrdersPriceById = async (req: Request, res: Response) => {
   try {
     const userID = req.params.userId;
