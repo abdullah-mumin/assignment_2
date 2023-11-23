@@ -85,9 +85,27 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
+UserSchema.set('toJSON', {
+  transform: function (doc, ret) {
+    delete ret.password;
+    return ret;
+  },
+});
+
 UserSchema.post('save', async function (doc, next) {
   //   doc.set('password').save();
   //   doc.set('fullName')
+  // delete doc.password;
+  // try {
+  //   // Remove the password field from the database
+  //   await User.updateOne({ _id: doc._id }, { $unset: { password: 1 } });
+  //   // Remove the password field from the in-memory
+  //   // doc.password = "";
+  //   next();
+  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // } catch (err: any) {
+  //   return next(err);
+  // }
   next();
 });
 

@@ -25,21 +25,16 @@ const getUserByIDFromDB = async (id: number) => {
 
 const updateUserByIdFromDB = async (id: number, userData: TUser) => {
   if (await User.isUserExists(id)) {
-    // throw new Error('Exist');
-    // console.log(userData);
-    // const userInfo = await User.findOne({ userId: id });
-    // if (userInfo !== userData) {
-    //   const result = await User.updateOne({ userId: id }, { $set: userData });
-    //   return result;
-    // } else {
-    //   return null;
-    // }
     const result = await User.updateOne(
       { userId: id },
       { $set: userData },
       { upsert: true },
     );
-    return result;
+    if (result.modifiedCount === 1) {
+      const updatedDocument = await User.findOne({ userId: id });
+      return updatedDocument;
+    }
+    // return result;
   } else {
     return null;
   }
