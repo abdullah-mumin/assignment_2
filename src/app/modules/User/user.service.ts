@@ -16,7 +16,21 @@ const getAllUsersFromDB = async () => {
 
 const getUserByIDFromDB = async (id: number) => {
   if (await User.isUserExists(id)) {
-    const result = await User.findOne({ userId: id });
+    const result = await User.aggregate([
+      { $match: { userId: id } },
+      {
+        $project: {
+          userId: 1,
+          username: 1,
+          fullName: 1,
+          age: 1,
+          email: 1,
+          isActive: 1,
+          hobbies: 1,
+          address: 1,
+        },
+      },
+    ]);
     return result;
   } else {
     return null;
