@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 import { TAddress, TFullName, TUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
+import { OrderSchema } from '../Order/order.model';
 
 export const fullNameSchema = new Schema<TFullName>({
   firstName: {
@@ -66,7 +67,7 @@ export const UserSchema = new Schema<TUser, UserModel>({
   },
   address: addressSchema,
   orders: {
-    type: [Object],
+    type: [OrderSchema],
     default: [],
   },
 });

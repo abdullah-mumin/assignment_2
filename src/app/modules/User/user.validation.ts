@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import orderValidationSchema from '../Order/order.validation';
 
 // Define Zod schema for the full name
 export const fullNameValidationSchema = z.object({
@@ -60,7 +61,7 @@ export const userValidationSchema = z.object({
   isActive: z.boolean().default(true),
   hobbies: z.array(z.string()).default([]),
   address: addressValidationSchema,
-  orders: z.array(z.object({})).default([]),
+  orders: z.array(orderValidationSchema).optional().default([]),
 });
 
 export default userValidationSchema;

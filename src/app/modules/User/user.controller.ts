@@ -6,7 +6,6 @@ const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
     const userValidationData = userValidationSchema.parse(userData);
-
     const result = await userServices.createUserToDB(userValidationData);
 
     res.status(201).json({
@@ -14,6 +13,7 @@ const createUser = async (req: Request, res: Response) => {
       message: 'User created successfully!',
       data: result,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -121,6 +121,7 @@ const updateUserById = async (req: Request, res: Response) => {
         },
       });
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
       success: false,
