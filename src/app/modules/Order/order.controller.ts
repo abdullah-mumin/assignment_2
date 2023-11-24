@@ -1,13 +1,11 @@
 import { Request, Response } from 'express';
 import { orderServices } from './order.service';
 import orderValidationSchema from './order.validation';
-// import { TOrder } from './order.interface';
 
 const createOrderById = async (req: Request, res: Response) => {
   try {
     const userID = req.params.userId;
     const orderData = req.body;
-    // console.log(orderData);
     const orderValidationData = orderValidationSchema.parse(orderData);
     const result = await orderServices.createOrderByIDToDB(
       parseInt(userID),
@@ -23,10 +21,10 @@ const createOrderById = async (req: Request, res: Response) => {
     } else {
       res.status(200).json({
         success: false,
-        message: 'User not found',
+        message: 'User not found!',
         error: {
           code: 404,
-          description: 'User not found',
+          description: 'User not found!',
         },
       });
     }
@@ -34,10 +32,11 @@ const createOrderById = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'Internal Server Error!',
+      message:
+        (error.issues && error.issues[0].code) || 'Internal Server Error!',
       error: {
         code: 500,
-        description: error.issues[0].message,
+        description: error.issues[0].message || 'Internal Server Error!',
       },
     });
   }
@@ -69,10 +68,10 @@ const getOrdersById = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'User not found',
+      message: 'Something went wrong!',
       error: {
-        code: 404,
-        description: 'User not found!',
+        code: 500,
+        description: 'Internel server error!',
       },
     });
   }
@@ -85,30 +84,40 @@ const getTotalOrdersPriceById = async (req: Request, res: Response) => {
       parseInt(userID),
     );
     if (result !== null) {
-      res.status(200).json({
-        success: true,
-        message: 'Order fetched successfully!',
-        data: {
-          totalPrice: result,
-        },
-      });
+      if (result !== 0) {
+        res.status(200).json({
+          success: true,
+          message: 'Order fetched successfully!',
+          data: {
+            totalPrice: result,
+          },
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: 'Order fetched successfully!',
+          data: {
+            totalPrice: result,
+          },
+        });
+      }
     } else {
       res.status(200).json({
         success: false,
-        message: 'Orders not found!',
+        message: 'User not found!',
         error: {
           code: 404,
-          description: 'Orders not found!',
+          description: 'User not found!',
         },
       });
     }
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'User not found',
+      message: 'Something went wrong!',
       error: {
-        code: 404,
-        description: 'User not found!',
+        code: 500,
+        description: 'Internal server error!',
       },
     });
   }

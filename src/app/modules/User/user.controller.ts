@@ -14,12 +14,29 @@ const createUser = async (req: Request, res: Response) => {
       message: 'User created successfully!',
       data: result,
     });
-  } catch (error) {
-    // console.log(error);
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'Something went wrong!',
-      error: error,
+      message:
+        (error.issues && error.issues[0].code) || 'Something went wrong!',
+      error: {
+        code: 500,
+        description:
+          (error.issues && error.issues[0].message) ||
+          (error.code === 11000 &&
+            error.keyPattern &&
+            error.keyPattern.username &&
+            'Username must be unique!') ||
+          (error.code === 11000 &&
+            error.keyPattern &&
+            error.keyPattern.email &&
+            'Email must be unique!') ||
+          (error.code === 11000 &&
+            error.keyPattern &&
+            error.keyPattern.userId &&
+            'userId must be unique!') ||
+          'Something went wrong!',
+      },
     });
   }
 };
@@ -37,7 +54,10 @@ const getAllUsers = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something went wrong!',
-      error: error,
+      error: {
+        code: 404,
+        description: 'Something went wrong!',
+      },
     });
   }
 };
@@ -101,13 +121,28 @@ const updateUserById = async (req: Request, res: Response) => {
         },
       });
     }
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'User not found',
+      message:
+        (error.issues && error.issues[0].code) || 'Something went wrong!',
       error: {
-        code: 404,
-        description: 'User not found!',
+        code: 500,
+        description:
+          (error.issues && error.issues[0].message) ||
+          (error.code === 11000 &&
+            error.keyPattern &&
+            error.keyPattern.username &&
+            'Username must be unique!') ||
+          (error.code === 11000 &&
+            error.keyPattern &&
+            error.keyPattern.email &&
+            'Email must be unique!') ||
+          (error.code === 11000 &&
+            error.keyPattern &&
+            error.keyPattern.userId &&
+            'userId must be unique!') ||
+          'Something went wrong!',
       },
     });
   }

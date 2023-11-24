@@ -45,7 +45,7 @@ const getTotalOrdersPriceByIdFromDB = async (id: number) => {
     if (totalPrice) {
       return totalPrice;
     } else {
-      return null;
+      return 0;
     }
   } else {
     return null;
