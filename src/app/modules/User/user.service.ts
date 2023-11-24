@@ -34,51 +34,18 @@ const updateUserByIdFromDB = async (id: number, userData: TUser) => {
       const updatedDocument = await User.findOne({ userId: id });
       return updatedDocument;
     }
-    // return result;
   } else {
     return null;
   }
-  //   else {
-  //     const result = {
-  //       code: 404,
-  //       description: 'User not found!',
-  //     };
-  //     return result;
-  //   }
-  //   const userInfo = await User.findOne({ userId: id });
-
-  //   if (userInfo !== userData) {
-  //     const result = await User.updateOne({ userId: id }, { $set: userData });
-  //     return result;
-  //   } else {
-  //     throw new Error('Already updated!');
-  //   }
-  // const result = studentData;
-  // const result = await Student.aggregate([{ $match: { id: id } }]);
-  // return result;
 };
 
 const deleteUserByIdFromDB = async (id: number) => {
   if (await User.isUserExists(id)) {
-    const result = await User.updateOne(
-      { userId: id },
-      { $set: { isDelete: true } },
-    );
+    const result = await User.deleteOne({ userId: id });
     return result;
   } else {
     return null;
   }
-  // const result = await User.updateOne(
-  //   { userId: id },
-  //   { $set: { isDelete: true } },
-  // );
-  // return result;
-  // const deletedData = await User.updateOne(
-  //   { userId: id },
-  //   { isDelete: true },
-  //   { writeConcern: { w: 'majority' } },
-  // );
-  // console.log(deletedData);
 };
 
 export const userServices = {

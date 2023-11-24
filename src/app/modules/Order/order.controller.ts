@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
 import { orderServices } from './order.service';
-import ordersValidationSchema from './order.validation';
+import orderValidationSchema from './order.validation';
 // import { TOrder } from './order.interface';
 
 const createOrderById = async (req: Request, res: Response) => {
   try {
     const userID = req.params.userId;
     const orderData = req.body;
-    const orderValidationData = ordersValidationSchema.parse(orderData);
+    // console.log(orderData);
+    const orderValidationData = orderValidationSchema.parse(orderData);
     const result = await orderServices.createOrderByIDToDB(
       parseInt(userID),
       orderValidationData,
@@ -29,6 +30,7 @@ const createOrderById = async (req: Request, res: Response) => {
         },
       });
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
       success: false,

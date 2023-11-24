@@ -12,6 +12,6 @@ const orderValidationSchema = z.object({
     .min(1, { message: 'Quantity must be a positive integer!' }),
 });
 
-const ordersValidationSchema = z.array(orderValidationSchema);
+// const ordersValidationSchema = z.array(orderValidationSchema);
 
-export default ordersValidationSchema;
+export default orderValidationSchema;

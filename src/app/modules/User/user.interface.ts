@@ -22,11 +22,11 @@ export interface TUser extends Document {
   isActive: boolean;
   hobbies: string[];
   address: TAddress;
-  isDelete: boolean;
-  orders: [TOrder];
+  orders: TOrder[];
 }
 
 //for creating static
 export interface UserModel extends Model<TUser> {
+  // eslint-disable-next-line no-unused-vars
   isUserExists(userId: number): Promise<TUser | null>;
 }

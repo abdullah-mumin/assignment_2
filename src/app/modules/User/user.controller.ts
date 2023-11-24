@@ -79,9 +79,10 @@ const updateUserById = async (req: Request, res: Response) => {
   try {
     const userID = req.params.userId;
     const userData = req.body;
+    const userValidationData = userValidationSchema.parse(userData);
     const result = await userServices.updateUserByIdFromDB(
       parseInt(userID),
-      userData,
+      userValidationData,
     );
 
     if (result !== null) {
@@ -117,7 +118,7 @@ const deleteUserByID = async (req: Request, res: Response) => {
     const id = req.params.userId;
     const result = await userServices.deleteUserByIdFromDB(parseInt(id));
 
-    if (result !== null) {
+    if (result?.deletedCount === 1) {
       res.status(200).json({
         success: true,
         message: 'User deleted successfully!',
