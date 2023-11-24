@@ -1,13 +1,16 @@
 import { Request, Response } from 'express';
 import { orderServices } from './order.service';
+import ordersValidationSchema from './order.validation';
+// import { TOrder } from './order.interface';
 
 const createOrderById = async (req: Request, res: Response) => {
   try {
     const userID = req.params.userId;
     const orderData = req.body;
+    const orderValidationData = ordersValidationSchema.parse(orderData);
     const result = await orderServices.createOrderByIDToDB(
       parseInt(userID),
-      orderData,
+      orderValidationData,
     );
 
     if (result !== null) {
@@ -26,13 +29,13 @@ const createOrderById = async (req: Request, res: Response) => {
         },
       });
     }
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'User not found',
+      message: 'Internal Server Error!',
       error: {
-        code: 404,
-        description: 'User not found!',
+        code: 500,
+        description: error.issues[0].message,
       },
     });
   }

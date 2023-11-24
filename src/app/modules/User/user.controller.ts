@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
 import { userServices } from './user.service';
+import userValidationSchema from './user.validation';
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
+    const userValidationData = userValidationSchema.parse(userData);
 
-    const result = await userServices.createUserToDB(userData);
+    const result = await userServices.createUserToDB(userValidationData);
 
     res.status(201).json({
       success: true,

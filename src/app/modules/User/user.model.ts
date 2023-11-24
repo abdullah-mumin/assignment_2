@@ -6,52 +6,54 @@ import config from '../../config';
 export const fullNameSchema = new Schema<TFullName>({
   firstName: {
     type: String,
-    required: true,
+    maxlength: [20, 'First Name can not be more then 20 characters!'],
+    required: [true, 'First Name is required!'],
   },
   lastName: {
     type: String,
-    required: true,
+    maxlength: [20, 'Last Name can not be more then 20 characters!'],
+    required: [true, 'Last Name is required!'],
   },
 });
 
 export const addressSchema = new Schema<TAddress>({
   street: {
     type: String,
-    required: true,
+    required: [true, 'Street is required!'],
   },
   city: {
     type: String,
-    required: true,
+    required: [true, 'City is required!'],
   },
   country: {
     type: String,
-    required: true,
+    required: [true, 'Country is required!'],
   },
 });
 
 export const UserSchema = new Schema<TUser, UserModel>({
   userId: {
     type: Number,
-    required: true,
+    required: [true, 'ID is required!'],
     unique: true,
   },
   username: {
     type: String,
-    required: true,
+    required: [true, 'Username is required!'],
     unique: true,
   },
   password: {
     type: String,
-    // required: true,
+    required: [true, 'Password is required!'],
   },
   fullName: fullNameSchema,
   age: {
     type: Number,
-    required: true,
+    required: [true, 'Age is required!'],
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'Email is required!'],
     unique: true,
   },
   isActive: {

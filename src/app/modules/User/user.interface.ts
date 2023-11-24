@@ -12,7 +12,7 @@ export interface TAddress {
   country: string;
 }
 
-export interface TUser {
+export interface TUser extends Document {
   userId: number;
   username: string;
   password: string;
@@ -23,7 +23,7 @@ export interface TUser {
   hobbies: string[];
   address: TAddress;
   isDelete: boolean;
-  orders: TOrder[];
+  orders: [TOrder];
 }
 
 //for creating static
