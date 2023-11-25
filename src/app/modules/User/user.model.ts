@@ -91,33 +91,6 @@ UserSchema.set('toJSON', {
   },
 });
 
-//Query Middleware
-// UserSchema.pre('find', function (next) {
-//   this.find({ isDelete: { $ne: true } });
-//   next();
-// });
-// UserSchema.pre('findOne', function (next) {
-//   this.findOne({ isDelete: { $ne: true } });
-//   next();
-// });
-
-// UserSchema.post('save', async function (doc, next) {
-//   //   doc.set('password').save();
-//   //   doc.set('fullName')
-//   // delete doc.password;
-//   // try {
-//   //   // Remove the password field from the database
-//   //   await User.updateOne({ _id: doc._id }, { $unset: { password: 1 } });
-//   //   // Remove the password field from the in-memory
-//   //   // doc.password = "";
-//   //   next();
-//   //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   // } catch (err: any) {
-//   //   return next(err);
-//   // }
-//   next();
-// });
-
 //custom static function
 UserSchema.statics.isUserExists = async function (id: number) {
   const existingUser = await User.findOne({ userId: id });

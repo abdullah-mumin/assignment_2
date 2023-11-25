@@ -12,12 +12,12 @@ app.use(cors());
 app.use('/api/users', userRoutes);
 app.use('/api/users', orderRoutes);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello from Root Devs!');
-});
-
-app.post('/', (req: Request, res: Response) => {
-  res.send('Hello from Root Devs!');
-});
+const getAController = (req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    message: 'Welcome to Root Devs API',
+  });
+};
+app.get('/', getAController);
 
 export default app;
