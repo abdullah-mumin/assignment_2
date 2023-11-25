@@ -6,7 +6,11 @@ const createOrderById = async (req: Request, res: Response) => {
   try {
     const userID = req.params.userId;
     const orderData = req.body;
+
+    //Zod validation
     const orderValidationData = orderValidationSchema.parse(orderData);
+
+    //send validate data to orderServices
     const result = await orderServices.createOrderByIDToDB(
       parseInt(userID),
       orderValidationData,
@@ -45,6 +49,8 @@ const createOrderById = async (req: Request, res: Response) => {
 const getOrdersById = async (req: Request, res: Response) => {
   try {
     const userID = req.params.userId;
+
+    //send & get data from orderServices
     const result = await orderServices.getOrdersByIDFromDB(parseInt(userID));
 
     if (result !== null) {
@@ -52,7 +58,7 @@ const getOrdersById = async (req: Request, res: Response) => {
         success: true,
         message: 'Order fetched successfully!',
         data: {
-          orders: result?.orders,
+          orders: result,
         },
       });
     } else {
@@ -80,6 +86,8 @@ const getOrdersById = async (req: Request, res: Response) => {
 const getTotalOrdersPriceById = async (req: Request, res: Response) => {
   try {
     const userID = req.params.userId;
+
+    //send & get data from orderServices
     const result = await orderServices.getTotalOrdersPriceByIdFromDB(
       parseInt(userID),
     );

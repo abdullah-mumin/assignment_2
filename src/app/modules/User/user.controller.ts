@@ -5,7 +5,11 @@ import userValidationSchema from './user.validation';
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
+
+    //Zod validation
     const userValidationData = userValidationSchema.parse(userData);
+
+    //send validate data to userServices
     const result = await userServices.createUserToDB(userValidationData);
 
     res.status(201).json({
@@ -43,6 +47,7 @@ const createUser = async (req: Request, res: Response) => {
 
 const getAllUsers = async (req: Request, res: Response) => {
   try {
+    //send & get data from userServices
     const result = await userServices.getAllUsersFromDB();
 
     res.status(200).json({
@@ -65,6 +70,8 @@ const getAllUsers = async (req: Request, res: Response) => {
 const getUserById = async (req: Request, res: Response) => {
   try {
     const userID = req.params.userId;
+
+    //send & get data from userServices
     const result = await userServices.getUserByIDFromDB(parseInt(userID));
 
     if (result !== null) {
@@ -99,7 +106,11 @@ const updateUserById = async (req: Request, res: Response) => {
   try {
     const userID = req.params.userId;
     const userData = req.body;
+
+    //Zod validation
     const userValidationData = userValidationSchema.parse(userData);
+
+    //send validate data to userServices
     const result = await userServices.updateUserByIdFromDB(
       parseInt(userID),
       userValidationData,
@@ -152,6 +163,8 @@ const updateUserById = async (req: Request, res: Response) => {
 const deleteUserByID = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
+
+    //send & get data from userServices
     const result = await userServices.deleteUserByIdFromDB(parseInt(id));
 
     if (result?.deletedCount === 1) {

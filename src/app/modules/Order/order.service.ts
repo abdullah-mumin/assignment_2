@@ -4,8 +4,8 @@ import { TOrder } from './order.interface';
 const createOrderByIDToDB = async (id: number, orderData: TOrder) => {
   if (await User.isUserExists(id)) {
     const updatedData = await User.updateOne(
-      { userId: id },
-      { $push: { orders: orderData } },
+      { userId: id }, //check user is exists or not with that userId
+      { $push: { orders: orderData } }, // pust data to the orders array
       { upsert: true },
     );
     return updatedData;
@@ -16,8 +16,9 @@ const createOrderByIDToDB = async (id: number, orderData: TOrder) => {
 
 const getOrdersByIDFromDB = async (id: number) => {
   if (await User.isUserExists(id)) {
-    const result = await User.findOne({ userId: id });
-    return result;
+    const result = await User.findOne({ userId: id }); // find user data with userId
+    const orders = result && result?.orders; // filter user data and get orders
+    return orders;
   } else {
     return null;
   }
@@ -26,17 +27,17 @@ const getOrdersByIDFromDB = async (id: number) => {
 const getTotalOrdersPriceByIdFromDB = async (id: number) => {
   if (await User.isUserExists(id)) {
     const result = await User.aggregate([
-      { $match: { userId: id } },
-      { $unwind: '$orders' },
+      { $match: { userId: id } }, //stage-1: check user with userId
+      { $unwind: '$orders' }, //stage-2: make orders array to multiple object
       {
         $project: {
-          totalCost: { $multiply: ['$orders.price', '$orders.quantity'] },
+          totalCost: { $multiply: ['$orders.price', '$orders.quantity'] }, //stage-3: multiply with product price and quantity
         },
       },
       {
         $group: {
-          _id: 0,
-          totalPrice: { $sum: '$totalCost' },
+          _id: 0, ////stage-4 group by a constant value with _id
+          totalPrice: { $sum: '$totalCost' }, ////stage-5 sum of the all product price as array
         },
       },
     ]);

@@ -72,6 +72,7 @@ export const UserSchema = new Schema<TUser, UserModel>({
   },
 });
 
+// middleware
 UserSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this; //document
